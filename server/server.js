@@ -1,0 +1,22 @@
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const connectDB = require("./config/db");
+const progressRoutes = require("./routes/progressRoutes");
+const aiRoutes = require("./routes/aiRoutes");
+const learningRoutes = require("./routes/learning.routes");
+const app = express();
+connectDB();
+app.use(express.json());
+app.use(cors());
+app.use("/api/learning", learningRoutes);
+
+app.use("/api/progress",progressRoutes);
+
+app.use("/api/ai", aiRoutes);
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
