@@ -1,4 +1,3 @@
-import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import {
   SignedIn,
@@ -6,88 +5,64 @@ import {
   RedirectToSignIn,
 } from "@clerk/clerk-react";
 
-const Home = lazy(() => import("./pages/Home"));
-const Login = lazy(() => import("./pages/Login"));
-const Register = lazy(() => import("./pages/Register"));
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
-const DashboardLayout = lazy(() =>
-  import("./components/dashboard/DashboardLayout")
-);
+import DashboardLayout from "./components/dashboard/DashboardLayout";
 
-const DashboardHome = lazy(() =>
-  import("./pages/dashboard/DashboardHome")
-);
-
-const Analytics = lazy(() =>
-  import("./pages/dashboard/Analytics")
-);
-
-const Contests = lazy(() =>
-  import("./pages/dashboard/Contests")
-);
-
-const AIInsights = lazy(() =>
-  import("./pages/dashboard/AIInsights")
-);
-
-const LearningMode = lazy(() =>
-  import("./pages/dashboard/LearningMode")
-);
+import DashboardHome from "./pages/dashboard/DashboardHome";
+import Analytics from "./pages/dashboard/Analytics";
+import Contests from "./pages/dashboard/Contests";
+import AIInsights from "./pages/dashboard/AIInsights";
+import LearningMode from "./pages/dashboard/LearningMode";
 
 const App = () => {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center bg-[#020617] text-white">
-          Loading...
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Home />} />
+    <Routes>
+      <Route path="/" element={<Home />} />
 
-        <Route path="/login/*" element={<Login />} />
+      <Route path="/login/*" element={<Login />} />
 
-        <Route path="/register/*" element={<Register />} />
+      <Route path="/register/*" element={<Register />} />
+
+      <Route
+        path="/dashboard"
+        element={
+          <>
+            <SignedIn>
+              <DashboardLayout />
+            </SignedIn>
+
+            <SignedOut>
+              <RedirectToSignIn />
+            </SignedOut>
+          </>
+        }
+      >
+        <Route index element={<DashboardHome />} />
 
         <Route
-          path="/dashboard"
-          element={
-            <>
-              <SignedIn>
-                <DashboardLayout />
-              </SignedIn>
+          path="analytics"
+          element={<Analytics />}
+        />
 
-              <SignedOut>
-                <RedirectToSignIn />
-              </SignedOut>
-            </>
-          }
-        >
-          <Route index element={<DashboardHome />} />
+        <Route
+          path="contests"
+          element={<Contests />}
+        />
 
-          <Route
-            path="analytics"
-            element={<Analytics />}
-          />
+        <Route
+          path="insights"
+          element={<AIInsights />}
+        />
 
-          <Route
-            path="contests"
-            element={<Contests />}
-          />
-
-          <Route
-            path="insights"
-            element={<AIInsights />}
-          />
-
-          <Route
-            path="learning-mode"
-            element={<LearningMode />}
-          />
-        </Route>
-      </Routes>
-    </Suspense>
+        <Route
+          path="learning-mode"
+          element={<LearningMode />}
+        />
+      </Route>
+    </Routes>
   );
 };
 
