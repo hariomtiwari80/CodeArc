@@ -17,6 +17,7 @@ import {
 import { useUser } from "@clerk/clerk-react";
 import { useHandle } from "../../hooks/useHandle";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const AIInsights = () => {
 
@@ -211,7 +212,7 @@ if (
 
             const response =
               await fetch(
-                `https://codearc-server.onrender.com/api/progress/${handle}`
+                `${API_BASE_URL}/api/progress/load?handle=${handle}`
               );
 
             const data =
@@ -457,10 +458,10 @@ const weakTopics = useMemo(() => {
 
     try {
 
-      setRoadmapLoading(true);
+      setRoadmapLoading(true)
 
       const response = await fetch(
-        "https://codearc-server.onrender.com/api/ai/roadmap",
+        `${API_BASE_URL}/api/ai/roadmap`,
         {
           method: "POST",
 
@@ -679,7 +680,7 @@ useEffect(() => {
               try {
 
                 await fetch(
-                  "https://codearc-server.onrender.com/api/progress/save",
+                  `${API_BASE_URL}/api/progress/save`,
                   {
                     method: "POST",
 
