@@ -5,7 +5,6 @@ import {
 } from "react";
 
 import { motion } from "framer-motion";
-import jsPDF from "jspdf";
 import {
   AlertTriangle,
   TrendingUp,
@@ -606,7 +605,8 @@ useEffect(() => {
   contestWeakness,
   weakTopics,
 ]);
-  const downloadPDF = () => {
+  const downloadPDF = async() => {
+    const { default: jsPDF } = await import("jspdf");
     const doc = new jsPDF();
     let y = 20;
     doc.setFontSize(22);

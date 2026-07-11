@@ -5,26 +5,63 @@ import {
   RedirectToSignIn,
 } from "@clerk/clerk-react";
 
+import { lazy, Suspense } from "react";
+
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 
-import DashboardHome from "./pages/dashboard/DashboardHome";
-import Analytics from "./pages/dashboard/Analytics";
-import Contests from "./pages/dashboard/Contests";
-import AIInsights from "./pages/dashboard/AIInsights";
-import LearningMode from "./pages/dashboard/LearningMode";
+const DashboardHome = lazy(() =>
+  import("./pages/dashboard/DashboardHome")
+);
+
+const Analytics = lazy(() =>
+  import("./pages/dashboard/Analytics")
+);
+
+const Contests = lazy(() =>
+  import("./pages/dashboard/Contests")
+);
+
+const AIInsights = lazy(() =>
+  import("./pages/dashboard/AIInsights")
+);
+
+const LearningMode = lazy(() =>
+  import("./pages/dashboard/LearningMode")
+);
+
+const Loader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-[#030712]">
+    <div className="flex flex-col items-center gap-4">
+      <div className="w-12 h-12 border-4 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin"></div>
+
+      <p className="text-slate-300 text-lg">
+        Loading...
+      </p>
+    </div>
+  </div>
+);
 
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route
+        path="/"
+        element={<Home />}
+      />
 
-      <Route path="/login/*" element={<Login />} />
+      <Route
+        path="/login/*"
+        element={<Login />}
+      />
 
-      <Route path="/register/*" element={<Register />} />
+      <Route
+        path="/register/*"
+        element={<Register />}
+      />
 
       <Route
         path="/dashboard"
@@ -40,26 +77,49 @@ const App = () => {
           </>
         }
       >
-        <Route index element={<DashboardHome />} />
+        <Route
+          index
+          element={
+            <Suspense fallback={<Loader />}>
+              <DashboardHome />
+            </Suspense>
+          }
+        />
 
         <Route
           path="analytics"
-          element={<Analytics />}
+          element={
+            <Suspense fallback={<Loader />}>
+              <Analytics />
+            </Suspense>
+          }
         />
 
         <Route
           path="contests"
-          element={<Contests />}
+          element={
+            <Suspense fallback={<Loader />}>
+              <Contests />
+            </Suspense>
+          }
         />
 
         <Route
           path="insights"
-          element={<AIInsights />}
+          element={
+            <Suspense fallback={<Loader />}>
+              <AIInsights />
+            </Suspense>
+          }
         />
 
         <Route
           path="learning-mode"
-          element={<LearningMode />}
+          element={
+            <Suspense fallback={<Loader />}>
+              <LearningMode />
+            </Suspense>
+          }
         />
       </Route>
     </Routes>
